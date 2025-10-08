@@ -47,6 +47,7 @@ public class PsMpoKontr {
     public void printResult() {
         System.out.println("Ost = " + this.OST);
         System.out.println("DP_SOST = " +  DP_SOST);
+        System.out.println("DC4 =" + DC4 + " DC3 =" + DC3 + " DC2 =" + DC2 + " DC1 =" + DC1);
     }
 
     public static void main(String[] args) {
@@ -55,7 +56,7 @@ public class PsMpoKontr {
                 new PsMpoKontr(4,0, true, false, 15, 0, 1, 0,15, 0, 1, true,false,false, false, false, false);
         psMpoKontr.setOstForSection();
         psMpoKontr.setOstForAxle();
-
+        psMpoKontr.setValuesForPostitions();
         psMpoKontr.printResult();
     }
 
@@ -157,7 +158,50 @@ public class PsMpoKontr {
         positions[3] = ed;
     }
 
-    public void setValues(int [] array) {
+    public void setValuesForPostitions() {
+        if (Y6 != 0) {
+            setValuesForSection(this.OST);
+        }
 
+        if (Y7 != 0) {
+            setValuesForAxle(this.OST);
+        }
+    }
+
+    public void setValuesForSection(int Ost) {
+
+        savePositions(Ost, positions);
+//        if (positions[0] >47 && positions[0] < 58) {
+//            DC4 = mapIntValueToCode(positions[0]);
+//        }
+
+       DC4 = 83;
+
+        if (positions[1] >47 && positions[1] < 58) {
+            DC3 = mapIntValueToCode(positions[1]);
+        }
+        if (positions[2] >47 && positions[2] < 58) {
+            DC2 = mapIntValueToCode(positions[2]);
+        }
+        if (positions[3] >47 && positions[3] < 58) {
+            DC1 = mapIntValueToCode(positions[3]);
+        }
+    }
+
+    public void setValuesForAxle(int Ost) {
+
+        savePositions(Ost, positions);
+        if (positions[0] >47 && positions[0] < 58) {
+            DC4 = mapIntValueToCode(positions[0]);
+        }
+        if (positions[1] >47 && positions[1] < 58) {
+            DC3 = mapIntValueToCode(positions[1]);
+        }
+        if (positions[2] >47 && positions[2] < 58) {
+            DC2 = mapIntValueToCode(positions[2]);
+        }
+        if (positions[3] >47 && positions[3] < 58) {
+            DC1 = mapIntValueToCode(positions[3]);
+        }
     }
 }

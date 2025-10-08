@@ -186,6 +186,7 @@ public class PsMpoKontr {
         if (positions[3] >47 && positions[3] < 58) {
             DC1 = mapIntValueToCode(positions[3]);
         }
+        System.out.println("finished mapping for section");
     }
 
     public void setValuesForAxle(int Ost) {
@@ -203,5 +204,8 @@ public class PsMpoKontr {
         if (positions[3] >47 && positions[3] < 58) {
             DC1 = mapIntValueToCode(positions[3]);
         }
+
+        System.out.println("finished mapping for Axle");
+
     }
 }

@@ -44,20 +44,32 @@ public class PsMpoKontr {
         this.DC1 = this.DC2 = this.DC3 = this.DC4 = 48;
     }
 
-    public void printResult() {
+    public void printResult(int count) {
+        System.out.println("----------------------------------------------------------");
+        System.out.println("Tact number " + count);
         System.out.println("Ost = " + this.OST);
+        System.out.println("Rab_OK = " + RAB_OK + " Y10 = " + Y10);
         System.out.println("DP_SOST = " +  DP_SOST);
+        System.out.println("POS_AXLE = " + Y7 + " POS_UID = " + Y6 + " PS_UID = " + Y5);
         System.out.println("DC4 =" + DC4 + " DC3 =" + DC3 + " DC2 =" + DC2 + " DC1 =" + DC1);
     }
 
     public static void main(String[] args) {
 
-        PsMpoKontr psMpoKontr =
-                new PsMpoKontr(4,0, true, false, 15, 0, 1, 0,15, 0, 1, true,false,false, false, false, false);
-        psMpoKontr.setOstForSection();
-        psMpoKontr.setOstForAxle();
-        psMpoKontr.setValuesForPostitions();
-        psMpoKontr.printResult();
+//        PsMpoKontr psMpoKontr =
+//                new PsMpoKontr(4,0, true, false, 15, 0, 1, 0,15, 0, 1, true,false,false, false, false, false);
+//        psMpoKontr.setOstForSection();
+//        psMpoKontr.setOstForAxle();
+//        psMpoKontr.setValuesForPostitions();
+//        psMpoKontr.printResult();
+    }
+
+    public void doTact(int count) {
+        setOstForSection();
+        setOstForAxle();
+        setValuesForPostitions();
+        RAB_OK = Y10;
+        printResult(count);
     }
 
     public void setOstForSection() {
@@ -147,15 +159,22 @@ public class PsMpoKontr {
     }
 
     public void savePositions(Integer input, int [] positions) {
-        int tmp = 0;
-        int tsc = input % 10000;
-        int st = input % 1000;
-        int ds = input % 100;
-        int ed = input % 10;
+        int tmp = input;
+        int tsc = input / 1000;
+        tmp = input % 1000;
+        int st = tmp / 100;
+        tmp = tmp % 100;
+        int ds = tmp / 10;
+        tmp =  tmp % 10;
+        int ed = tmp;
         positions[0] = tsc;
         positions[1] = st;
         positions[2] = ds;
         positions[3] = ed;
+//        int i = 3;
+//        while (tmp > 0) {
+//
+//        }
     }
 
     public void setValuesForPostitions() {
@@ -177,13 +196,13 @@ public class PsMpoKontr {
 
        DC4 = 83;
 
-        if (positions[1] >47 && positions[1] < 58) {
+        if (positions[1] >-1 && positions[1] < 10) {
             DC3 = mapIntValueToCode(positions[1]);
         }
-        if (positions[2] >47 && positions[2] < 58) {
+        if (positions[2] >-1 && positions[2] < 10) {
             DC2 = mapIntValueToCode(positions[2]);
         }
-        if (positions[3] >47 && positions[3] < 58) {
+        if (positions[3] >-1 && positions[3] < 10) {
             DC1 = mapIntValueToCode(positions[3]);
         }
         System.out.println("finished mapping for section");

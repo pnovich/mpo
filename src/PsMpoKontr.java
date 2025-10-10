@@ -1,5 +1,9 @@
 public class PsMpoKontr {
     public Integer X7, X18, X10, X21, P24, P25, Y5, OST, Y6, Y7;
+    public static final int P1 = 2;
+    public int COUNT_OK = 0;
+
+    boolean flag = true;
 
     public Boolean RAB_OK, Y10, Y11, Y12, Y13, Y14, X8, X19,  DP_SOST;
 
@@ -44,14 +48,18 @@ public class PsMpoKontr {
         this.DC1 = this.DC2 = this.DC3 = this.DC4 = 48;
     }
 
-    public void printResult(int count) {
-        System.out.println("----------------------------------------------------------");
-        System.out.println("Tact number " + count);
-        System.out.println("Ost = " + this.OST);
-        System.out.println("Rab_OK = " + RAB_OK + " Y10 = " + Y10);
+    public void printResult(int count, int X27) {
+        System.out.println("Ost = " + this.OST + " Flag = " + flag);
+        System.out.println("Rab_OK = " + RAB_OK + " Y10 = " + Y10 + " X27 = " + X27);
         System.out.println("DP_SOST = " +  DP_SOST);
         System.out.println("POS_AXLE = " + Y7 + " POS_UID = " + Y6 + " PS_UID = " + Y5);
         System.out.println("DC4 =" + DC4 + " DC3 =" + DC3 + " DC2 =" + DC2 + " DC1 =" + DC1);
+    }
+
+    public void printAfterButtonProcessing(int count) {
+        System.out.println("----------------------------------------------------------");
+        System.out.println("Tact number " + count);
+        System.out.println("after button processing : RAB_OK = " + RAB_OK + " Y10 = " + Y10);
     }
 
     public static void main(String[] args) {
@@ -64,54 +72,85 @@ public class PsMpoKontr {
 //        psMpoKontr.printResult();
     }
 
-    public void doTact(int count) {
+    public void doTact(int count, int X27) {
+        flag = true;
+        processButton(X27);
+        printAfterButtonProcessing(count);
         setOstForSection();
         setOstForAxle();
         setValuesForPostitions();
         RAB_OK = Y10;
-        printResult(count);
+//        Y10 = false;
+        printResult(count, X27);
+    }
+
+    public void processButton(int X27) {
+        if (X27 != 0) {
+            if (COUNT_OK >= P1) {
+                Y10 = true;
+            } else {
+                COUNT_OK++;
+                Y10 = false;
+            }
+        } else {
+            COUNT_OK = 0;
+            Y10 = false;
+        }
     }
 
     public void setOstForSection() {
         if (P24 != 0 & Y6 == P24) {
-            Y5 = 0;
-            OST = X10;
-            boolean tmp = ((!(Y11 | Y12 | Y13 | Y14)) & ((!RAB_OK) & Y10));
+//            boolean tmp = ((!(Y11 | Y12 | Y13 | Y14)) & ((!RAB_OK) & Y10));
+            boolean tmp = (!RAB_OK) & Y10 & flag;
             if (tmp) {
+                Y5 = 0;
+                OST = X7;
+
                 Y7 = Y6;
                 Y6 = 0;
+                flag = false;
             }
         }
         if (P25 != 0 & Y6 == P25) {
-            Y5 = 0;
-            OST = X10;
-            boolean tmp = ((!(Y11 | Y12 | Y13 | Y14)) & ((!RAB_OK) & Y10));
+//            boolean tmp = ((!(Y11 | Y12 | Y13 | Y14)) & ((!RAB_OK) & Y10));
+            boolean tmp = (!RAB_OK) & Y10 & flag;
+
             if (tmp) {
+                Y5 = 0;
+                OST = X18;
+
                 Y7 = Y6;
                 Y6 = 0;
+                flag = false;
             }
         }
     }
 
     public void setOstForAxle() {
         if (P24 != 0 & Y7 == P24) {
-            Y5 = X10;
-            OST = X7;
-            DP_SOST = ((X7 != 0) & X8);
-            boolean tmp = ((!(Y11 | Y12 | Y13 | Y14)) & ((!RAB_OK) & Y10));
+//            boolean tmp = ((!(Y11 | Y12 | Y13 | Y14)) & ((!RAB_OK) & Y10));
+            boolean tmp = (!RAB_OK) & Y10 & flag;
             if (tmp) {
+                Y5 = X10;
+                OST = X10;
+                DP_SOST = ((X7 != 0) & X8);
+
                 Y6 = Y7;
                 Y7 = 0;
+                flag = false;
             }
         }
         if (P25 != 0 & Y7 == P25) {
-            Y5 = X21;
-            OST = X18;
-            DP_SOST = ((X18 != 0) & X19);
-            boolean tmp = ((!(Y11 | Y12 | Y13 | Y14)) & ((!RAB_OK) & Y10));
+//            boolean tmp = ((!(Y11 | Y12 | Y13 | Y14)) & ((!RAB_OK) & Y10));
+            boolean tmp = (!RAB_OK) & Y10 & flag;
             if (tmp) {
+                Y5 = X21;
+                OST = X21;
+                DP_SOST = ((X18 != 0) & X19);
+
                 Y6 = Y7;
                 Y7 = 0;
+                flag = false;
             }
         }
 
@@ -211,16 +250,16 @@ public class PsMpoKontr {
     public void setValuesForAxle(int Ost) {
 
         savePositions(Ost, positions);
-        if (positions[0] >47 && positions[0] < 58) {
+        if (positions[0] >-1 && positions[0] < 10) {
             DC4 = mapIntValueToCode(positions[0]);
         }
-        if (positions[1] >47 && positions[1] < 58) {
+        if (positions[1] >-1 && positions[1] < 10) {
             DC3 = mapIntValueToCode(positions[1]);
         }
-        if (positions[2] >47 && positions[2] < 58) {
+        if (positions[2] >-1 && positions[2] < 10) {
             DC2 = mapIntValueToCode(positions[2]);
         }
-        if (positions[3] >47 && positions[3] < 58) {
+        if (positions[3] >-1 && positions[3] < 10) {
             DC1 = mapIntValueToCode(positions[3]);
         }
 
